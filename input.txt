@@ -1,0 +1,12 @@
+create table Afiliado(
+Afi_idTarjeta int,
+Afi_documento int,
+Afi_nombre varchar,
+Afi_edad int,
+Afi_telefono int,
+Afi_correo varchar,
+Afi_sexo char,
+Afi_saldo int,
+Afi_puntos int
+);
+

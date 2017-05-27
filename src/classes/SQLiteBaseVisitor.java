@@ -1,5 +1,8 @@
 // Generated from SQLite.g4 by ANTLR 4.6
 package classes;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -17,6 +20,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	private String fileName = "";
+	BufferedWriter bw = null;
+	FileWriter fw = null;
 	@Override public T visitParse(SQLiteParser.ParseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -94,7 +100,60 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCreate_table_stmt(SQLiteParser.Create_table_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCreate_table_stmt(SQLiteParser.Create_table_stmtContext ctx) { 
+		try {
+
+			String content = "package translate; \n";
+			if(ctx.K_CREATE() != null){
+				content = content + "class ";
+			}
+			if(ctx.table_name() != null){
+				content = content + ctx.table_name().getText()+" { \n";
+				fileName=ctx.table_name().getText();
+			}
+			
+			if(ctx.column_def() != null){
+				for (int i=0;i<ctx.column_def().size();i++){
+					String type=ctx.column_def().get(i).type_name().getText();
+					if (type.equals("varchar")){
+						type="String";
+					}
+					String id=ctx.column_def().get(i).column_name().getText();
+					content = content + type + " " + id +"; \n";	
+				
+				}
+			}
+			fw = new FileWriter(fileName+ ".java");
+			bw = new BufferedWriter(fw);
+			bw.write(content);
+
+			System.out.println("Done");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+
+		}
+		
+		
+		return visitChildren(ctx); 
+		}
 	/**
 	 * {@inheritDoc}
 	 *
