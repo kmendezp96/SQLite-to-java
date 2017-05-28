@@ -1,3 +1,16 @@
+create table ex2(
+  a varchar (10),
+  b nvarchar not null,
+  c text,
+  d integer primary key,
+  e float unique,
+  f boolean,
+  g clob,
+  j numeric (10,5),
+  k varying character (24),
+  l varying character (16)
+);
+
 create table Afiliado(
 Afi_idTarjeta int,
 Afi_documento int,
@@ -9,4 +22,3 @@ Afi_sexo char,
 Afi_saldo int,
 Afi_puntos int
 );
-

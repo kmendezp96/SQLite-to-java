@@ -1,6 +1,9 @@
 // Generated from SQLite.g4 by ANTLR 4.6
 package classes;
 import java.io.BufferedWriter;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
@@ -115,10 +118,156 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			if(ctx.column_def() != null){
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
-					if (type.equals("varchar")){
+					String id=ctx.column_def().get(i).column_name().getText();
+					
+					
+					/*switch (type) {
+		            case "int":  type = "int";
+		                     break;
+		            case "integer":  type = "int";
+		                     break;
+		            case "tynyint":  type = "byte";
+		                     break;
+		            case "smallint":  type = "small";
+		                     break;
+		            case "mediumint":  type = "int";
+		                     break;
+		            case "bigint":  type = "long";
+		                     break;
+		            case "unisigned big int":  type = "long";
+		                     break;
+		            case "int2":  type = "small";
+		                     break;
+		            case "int8":  type = "long";
+		                     break;
+
+		            case "nchar": type = "String";
+		                    break;
+		            case "native character": type = "String";
+		                    break;
+		            case "nvarchar": type = "String";
+		                    break;
+		            case "text": type = "String";
+		                    break;
+		            case ".*clob.*": type = "String";
+		                    break;
+		            case ".*real.*": type = "float";
+		                    break;
+		            case ".*double.*": type = "double";
+		                    break;
+		            case "float": type = "float";
+		                    break;
+		            case ".*numeric.*": type = "String";
+		                    break;
+		            case ".*decimal.*": type = "float";
+		                    break;
+		            case ".*boolean.*": type = "boolean";
+		                    break;
+		            case ".*date.*": type = "String";
+		                    break;
+		            case ".*datetime.*": type = "String";
+                    		break;
+				    default: type = "";
+		                     break;
+		        }*/
+					//System.out.println(type+" "+ type.contains("notnull"));
+					if (type.contains("unique")){
+						
+						content = content + "boolean "+id+"Unique = true; \n";
+					}
+					if (type.contains("notnull") || type.contains("primarykey")){
+						content = content + "boolean "+id+"NotNull = true; \n";
+					}
+					if (type.contains("primarykey")){
+						content = content + "final int primaryKey= "+id+"; \n";
+					}
+					if (type.startsWith("varchar")){
 						type="String";
 					}
-					String id=ctx.column_def().get(i).column_name().getText();
+					if (type.startsWith("text")){
+						type="String";
+					}
+					if (type.startsWith("nchar")){
+						type="String";
+					}
+					if (type.startsWith("nativecharacter")){
+						type="String";
+					}
+					if (type.startsWith("nvarchar")){
+						type="String";
+					}
+					if (type.startsWith("varyingcharacter")){
+						type="String";
+					}
+					if (type.startsWith("clob")){
+						type="String";
+					}
+					if (type.startsWith("datetime")){
+						type="String";
+					}
+					if (type.startsWith("date")){
+						type="String";
+					}
+					
+					if (type.startsWith("numeric")){
+						type="String";
+					}
+					if (type.startsWith("int")){
+						type="int";
+					}
+					if (type.startsWith("integer")){
+						type="int";
+					}
+					if (type.startsWith("tynyint")){
+						type="byte";
+					}
+					if (type.startsWith("smallint")){
+						type="short";
+					}
+					if (type.startsWith("mediumint")){
+						type="int";
+					}
+					if (type.startsWith("bigint")){
+						type="long";
+					}
+					if (type.startsWith("unisignedbigint")){
+						type="long";
+					}
+					if (type.startsWith("int2")){
+						type="small";
+					}
+					if (type.startsWith("int8")){
+						type="long";
+					}
+					if (type.startsWith("real")){
+						type="float";
+					}
+					if (type.startsWith("float")){
+						type="float";
+					}
+					if (type.startsWith("double")){
+						type="double";
+					}
+					if (type.startsWith("decimal")){
+						type="decimal";
+					}
+					if (type.startsWith("boolean")){
+						type="boolean";
+					}
+					if (type.startsWith("unisignedbigint")){
+						type="long";
+					}
+					if (type.startsWith("int2")){
+						type="small";
+					}
+					if (type.startsWith("int8")){
+						type="long";
+					}
+					
+					
+
+
+
 					content = content + type + " " + id +"; \n";	
 				
 				}
