@@ -28,5 +28,17 @@ this.g = g;
 this.j = j; 
 this.k = k; 
 this.l = l; 
+ }
+ public ex2() { 
+this.a = ""; 
+this.b = ""; 
+this.c = ""; 
+this.d = 0; 
+this.e = 0.0; 
+this.f = false; 
+this.g = ""; 
+this.j = ""; 
+this.k = ""; 
+this.l = ""; 
  } 
  }

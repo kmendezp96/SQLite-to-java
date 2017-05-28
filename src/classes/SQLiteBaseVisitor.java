@@ -118,7 +118,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			if(ctx.column_def() != null){
 				String contentTemp="";
 				String constructorHead="public "+fileName+"(";
+				String constructorEmptyHead="\n public "+fileName+"() { \n";
 				String constructorBody="";
+				String constructorEmptyBody="";
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
 					String id=ctx.column_def().get(i).column_name().getText();
@@ -188,99 +190,118 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
+							
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("text")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("nchar")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("nativecharacter")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("nvarchar")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("varyingcharacter")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("clob")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("datetime")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("date")){
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					
@@ -288,201 +309,198 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						type="String";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"String "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"String "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"\"\""+"; \n";
 						}
 					}
 					if (type.startsWith("int")){
 						type="int";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"int "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"int "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("integer")){
 						type="int";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"int "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"int "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("tynyint")){
 						type="byte";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"byte "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"byte "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("smallint")){
 						type="short";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"short "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"short "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("mediumint")){
 						type="int";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"int "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"int "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("bigint")){
 						type="long";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"long "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"long "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("unisignedbigint")){
 						type="long";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"long "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"long "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("int2")){
 						type="short";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"short "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"short "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("int8")){
 						type="long";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"long "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"long "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("real")){
 						type="float";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"float "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"float "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
 						}
 					}
 					if (type.startsWith("float")){
 						type="float";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"float "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"float "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
 						}
 					}
 					if (type.startsWith("double")){
 						type="double";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"double "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"double "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
 						}
 					}
 					if (type.startsWith("decimal")){
 						type="double";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"double "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"double "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
 						}
 					}
 					if (type.startsWith("boolean")){
 						type="boolean";
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"boolean "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"false"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"boolean "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"false"+"; \n";
 						}
 					}
-					if (type.startsWith("unisignedbigint")){
-						type="long";
-						if (i==ctx.column_def().size()-1) {
-							constructorHead=constructorHead+"long "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
-						}
-						else {
-							constructorHead=constructorHead+"long "+id+", ";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-						}
-					}
-					if (type.startsWith("int2")){
-						type="short";
-						if (i==ctx.column_def().size()-1) {
-							constructorHead=constructorHead+"short "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
-						}
-						else {
-							constructorHead=constructorHead+"short "+id+", ";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-						}
-					}
-					if (type.startsWith("int8")){
-						type="long";
-						if (i==ctx.column_def().size()-1) {
-							constructorHead=constructorHead+"long "+id+"){ \n";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
-						}
-						else {
-							constructorHead=constructorHead+"long "+id+", ";
-							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-						}
-					}
-					
+
 					
 
 
@@ -495,6 +513,8 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				content = content + "LinkedList<"+fileName+"> table = new LinkedList<"+fileName+">(); \n";  
 				content = content+constructorHead;
 				content = content+constructorBody;
+				content = content+constructorEmptyHead;
+				content = content+constructorEmptyBody;
 			}
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
@@ -610,7 +630,22 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInsert_stmt(SQLiteParser.Insert_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitInsert_stmt(SQLiteParser.Insert_stmtContext ctx) { 
+		String className = ctx.table_name().getText();
+		String content = "package translate; \n import classes.SQLiteBaseVisitor; import translate."+className+"; \n"+
+		"class inserts-replace { \n"+
+		className+" holder = new "+className+"(); \n";
+		if(ctx.K_INSERT() != null){
+			//content = content + "holder.push(new "+className("aaa","aaa","aaa",3,3,true,"aaa","aaa","aaa","aaa"))";
+		}
+		if(ctx.K_REPLACE() != null){
+			content = content + ctx.table_name().getText()+" { \n";
+			fileName=ctx.table_name().getText();
+		}
+		
+		
+		
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -21,5 +21,15 @@ this.Afi_telefono = Afi_telefono;
 this.Afi_correo = Afi_correo; 
 this.Afi_saldo = Afi_saldo; 
 this.Afi_puntos = Afi_puntos; 
+ }
+ public Afiliado() { 
+this.Afi_idTarjeta = 0; 
+this.Afi_documento = 0; 
+this.Afi_nombre = ""; 
+this.Afi_edad = 0; 
+this.Afi_telefono = 0; 
+this.Afi_correo = ""; 
+this.Afi_saldo = 0; 
+this.Afi_puntos = 0; 
  } 
  }
