@@ -116,6 +116,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			}
 			
 			if(ctx.column_def() != null){
+				String contentTemp="";
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
 					String id=ctx.column_def().get(i).column_name().getText();
@@ -179,7 +180,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						content = content + "boolean "+id+"NotNull = true; \n";
 					}
 					if (type.contains("primarykey")){
-						content = content + "final int primaryKey= "+id+"; \n";
+						contentTemp = contentTemp + "final int primaryKey= "+id+"; \n";
 					}
 					if (type.startsWith("varchar")){
 						type="String";
@@ -269,8 +270,10 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 
 
 					content = content + type + " " + id +"; \n";	
+					
 				
 				}
+				content = content + contentTemp;
 			}
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
