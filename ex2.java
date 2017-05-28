@@ -1,12 +1,14 @@
 package translate; 
-class ex2 { 
+ import java.util.LinkedList; 
+ import java.util.List; 
+ class ex2 { 
 String a; 
-boolean bNotNull = true; 
+final boolean bNotNull = true; 
 String b; 
 String c; 
-boolean dNotNull = true; 
+final boolean dNotNull = true; 
 int d; 
-boolean eUnique = true; 
+final boolean eUnique = true; 
 float e; 
 boolean f; 
 String g; 
@@ -14,3 +16,17 @@ String j;
 String k; 
 String l; 
 final int primaryKey= d; 
+LinkedList<ex2> table = new LinkedList<ex2>(); 
+public ex2(String a, String b, String c, int d, float e, boolean f, String g, String j, String k, String l){ 
+this.a = a; 
+this.b = b; 
+this.c = c; 
+this.d = d; 
+this.e = e; 
+this.f = f; 
+this.g = g; 
+this.j = j; 
+this.k = k; 
+this.l = l; 
+ } 
+ }

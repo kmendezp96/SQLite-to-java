@@ -106,7 +106,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	@Override public T visitCreate_table_stmt(SQLiteParser.Create_table_stmtContext ctx) { 
 		try {
 
-			String content = "package translate; \n";
+			String content = "package translate; \n import java.util.LinkedList; \n import java.util.List; \n ";
 			if(ctx.K_CREATE() != null){
 				content = content + "class ";
 			}
@@ -117,6 +117,8 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			
 			if(ctx.column_def() != null){
 				String contentTemp="";
+				String constructorHead="public "+fileName+"(";
+				String constructorBody="";
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
 					String id=ctx.column_def().get(i).column_name().getText();
@@ -174,95 +176,311 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 					//System.out.println(type+" "+ type.contains("notnull"));
 					if (type.contains("unique")){
 						
-						content = content + "boolean "+id+"Unique = true; \n";
+						content = content + "final boolean "+id+"Unique = true; \n";
 					}
 					if (type.contains("notnull") || type.contains("primarykey")){
-						content = content + "boolean "+id+"NotNull = true; \n";
+						content = content + "final boolean "+id+"NotNull = true; \n";
 					}
 					if (type.contains("primarykey")){
 						contentTemp = contentTemp + "final int primaryKey= "+id+"; \n";
 					}
 					if (type.startsWith("varchar")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("text")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("nchar")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("nativecharacter")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("nvarchar")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("varyingcharacter")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("clob")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("datetime")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("date")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					
 					if (type.startsWith("numeric")){
 						type="String";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"String "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"String "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("int")){
 						type="int";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"int "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"int "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("integer")){
 						type="int";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"int "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"int "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("tynyint")){
 						type="byte";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"byte "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"byte "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("smallint")){
 						type="short";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"short "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"short "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("mediumint")){
 						type="int";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"int "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"int "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("bigint")){
 						type="long";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"long "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"long "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("unisignedbigint")){
 						type="long";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"long "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"long "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("int2")){
-						type="small";
+						type="short";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"short "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"short "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("int8")){
 						type="long";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"long "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"long "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("real")){
 						type="float";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"float "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"float "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("float")){
 						type="float";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"float "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"float "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("double")){
 						type="double";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"double "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"double "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("decimal")){
-						type="decimal";
+						type="double";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"double "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"double "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("boolean")){
 						type="boolean";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"boolean "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"boolean "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("unisignedbigint")){
 						type="long";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"long "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"long "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("int2")){
-						type="small";
+						type="short";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"short "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"short "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					if (type.startsWith("int8")){
 						type="long";
+						if (i==ctx.column_def().size()-1) {
+							constructorHead=constructorHead+"long "+id+"){ \n";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n } \n }";
+						}
+						else {
+							constructorHead=constructorHead+"long "+id+", ";
+							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
+						}
 					}
 					
 					
@@ -274,6 +492,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				
 				}
 				content = content + contentTemp;
+				content = content + "LinkedList<"+fileName+"> table = new LinkedList<"+fileName+">(); \n";  
+				content = content+constructorHead;
+				content = content+constructorBody;
 			}
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
