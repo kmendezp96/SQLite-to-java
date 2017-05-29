@@ -131,8 +131,14 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
 					String id=ctx.column_def().get(i).column_name().getText();
-					
-					
+					//System.out.println(ctx.column_def().get(i).getText());
+					if (ctx.column_def().get(i).getText().startsWith("foreignkey")){
+						int idI=ctx.column_def().get(i).getText().indexOf("foreignkey")+10;
+						int idF=ctx.column_def().get(i).getText().indexOf("references");
+						type="int";
+						//System.out.println(ctx.column_def().get(i).getText());
+						id= ctx.column_def().get(i).getText().substring(idI, idF); 
+					}
 					/*switch (type) {
 		            case "int":  type = "int";
 		                     break;
@@ -650,10 +656,10 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		LinkedList <String> columns= new LinkedList<String>();
 		if(countInserts==0){		
 		contentMain = contentMain+
-		className+" holder"+className+" = new "+className+"(); \n"+
-		className+" temp"+className+" = new "+className+"(); \n";
-		countInserts++;
+		className+" holder"+className+" = new "+className+"(); \n";
 		}
+
+		contentMain = contentMain+className+" temp"+countInserts+className+" = new "+className+"(); \n";
 		fileName = "Main";
 		try{
 			/*if(ctx.K_INSERT() != null){
@@ -674,9 +680,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				for (int i=0;i<ctx.expr().size();i++){
 				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
 				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
-					contentMain =contentMain +"temp."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
+					contentMain =contentMain+"temp"+countInserts+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
 				}
-				contentMain = contentMain + "holder.table.push(temp); \n ";
+				contentMain = contentMain + "holder.table.push(temp"+countInserts+"); \n ";
 			}
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
@@ -705,7 +711,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			}
 
 		}
-		
+		countInserts++;
 		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
