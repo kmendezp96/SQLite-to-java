@@ -1,19 +1,36 @@
 package translate; 
  import java.util.LinkedList; 
  import java.util.List; 
- class ex2 { 
+ public class ex2 { 
+final boolean aUnique = false; 
+final boolean aNotNull = false; 
 String a; 
+final boolean bUnique = false; 
 final boolean bNotNull = true; 
 String b; 
+final boolean cUnique = false; 
+final boolean cNotNull = false; 
 String c; 
+final boolean dUnique = false; 
 final boolean dNotNull = true; 
 int d; 
 final boolean eUnique = true; 
+final boolean eNotNull = false; 
 float e; 
+final boolean fUnique = false; 
+final boolean fNotNull = false; 
 boolean f; 
+final boolean gUnique = false; 
+final boolean gNotNull = false; 
 String g; 
+final boolean jUnique = false; 
+final boolean jNotNull = false; 
 String j; 
+final boolean kUnique = false; 
+final boolean kNotNull = false; 
 String k; 
+final boolean lUnique = false; 
+final boolean lNotNull = false; 
 String l; 
 final int primaryKey= d; 
 LinkedList<ex2> table = new LinkedList<ex2>(); 

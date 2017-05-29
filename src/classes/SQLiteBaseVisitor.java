@@ -2,6 +2,7 @@
 package classes;
 import java.io.BufferedWriter;
 import java.util.Date;
+import java.util.LinkedList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.io.FileWriter;
@@ -24,9 +25,15 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	private String fileName = "";
+	private String fileNameMain = "Main";
+	private int countInserts=0;
+	String contentMain = "package translate; \n import java.util.LinkedList; \n "+
+			"class Main { \n";
 	BufferedWriter bw = null;
 	FileWriter fw = null;
-	@Override public T visitParse(SQLiteParser.ParseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParse(SQLiteParser.ParseContext ctx) { 
+		//System.out.println(ctx.getText());
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -108,7 +115,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 
 			String content = "package translate; \n import java.util.LinkedList; \n import java.util.List; \n ";
 			if(ctx.K_CREATE() != null){
-				content = content + "class ";
+				content = content + "public class ";
 			}
 			if(ctx.table_name() != null){
 				content = content + ctx.table_name().getText()+" { \n";
@@ -180,9 +187,17 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						
 						content = content + "final boolean "+id+"Unique = true; \n";
 					}
+					else{
+						
+						content = content + "final boolean "+id+"Unique = false; \n";
+					}
 					if (type.contains("notnull") || type.contains("primarykey")){
 						content = content + "final boolean "+id+"NotNull = true; \n";
+					}else {
+						
+						content = content + "final boolean "+id+"NotNull = false; \n";
 					}
+					
 					if (type.contains("primarykey")){
 						contentTemp = contentTemp + "final int primaryKey= "+id+"; \n";
 					}
@@ -632,18 +647,64 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 */
 	@Override public T visitInsert_stmt(SQLiteParser.Insert_stmtContext ctx) { 
 		String className = ctx.table_name().getText();
-		String content = "package translate; \n import classes.SQLiteBaseVisitor; import translate."+className+"; \n"+
-		"class inserts-replace { \n"+
-		className+" holder = new "+className+"(); \n";
-		if(ctx.K_INSERT() != null){
-			//content = content + "holder.push(new "+className("aaa","aaa","aaa",3,3,true,"aaa","aaa","aaa","aaa"))";
+		LinkedList <String> columns= new LinkedList<String>();
+		if(countInserts==0){		
+		contentMain = contentMain+
+		className+" holder"+className+" = new "+className+"(); \n"+
+		className+" temp"+className+" = new "+className+"(); \n";
+		countInserts++;
 		}
-		if(ctx.K_REPLACE() != null){
-			content = content + ctx.table_name().getText()+" { \n";
-			fileName=ctx.table_name().getText();
+		fileName = "Main";
+		try{
+			/*if(ctx.K_INSERT() != null){
+				content = content + "holder.push(new "+className+"(";
+			}
+			
+			if(ctx.K_REPLACE() != null){
+				content = content + ctx.table_name().getText()+" { \n";
+				fileName=ctx.table_name().getText();
+			}*/
+			if(ctx.column_name () != null){
+				for (int i=0;i<ctx.column_name().size();i++){
+					columns.add(i,ctx.column_name().get(i).getText());
+				}
+			
+			}
+			if (ctx.expr() != null){
+				for (int i=0;i<ctx.expr().size();i++){
+				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
+				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
+					contentMain =contentMain +"temp."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
+				}
+				contentMain = contentMain + "holder.table.push(temp); \n ";
+			}
+			fw = new FileWriter(fileName+ ".java");
+			bw = new BufferedWriter(fw);
+			bw.write(contentMain);
+
+			System.out.println("Done");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+
 		}
-		
-		
 		
 		return visitChildren(ctx); }
 	/**
@@ -687,14 +748,18 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSimple_select_stmt(SQLiteParser.Simple_select_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSimple_select_stmt(SQLiteParser.Simple_select_stmtContext ctx) { 
+		System.out.println(ctx.getText());
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSelect_stmt(SQLiteParser.Select_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSelect_stmt(SQLiteParser.Select_stmtContext ctx) { 
+		System.out.println(ctx.getText());
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

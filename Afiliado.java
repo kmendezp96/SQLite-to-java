@@ -1,15 +1,33 @@
 package translate; 
  import java.util.LinkedList; 
  import java.util.List; 
- class Afiliado { 
+ public class Afiliado { 
+final boolean Afi_idTarjetaUnique = false; 
+final boolean Afi_idTarjetaNotNull = false; 
 int Afi_idTarjeta; 
+final boolean Afi_documentoUnique = false; 
+final boolean Afi_documentoNotNull = false; 
 int Afi_documento; 
+final boolean Afi_nombreUnique = false; 
+final boolean Afi_nombreNotNull = false; 
 String Afi_nombre; 
+final boolean Afi_edadUnique = false; 
+final boolean Afi_edadNotNull = false; 
 int Afi_edad; 
+final boolean Afi_telefonoUnique = false; 
+final boolean Afi_telefonoNotNull = false; 
 int Afi_telefono; 
+final boolean Afi_correoUnique = false; 
+final boolean Afi_correoNotNull = false; 
 String Afi_correo; 
+final boolean Afi_sexoUnique = false; 
+final boolean Afi_sexoNotNull = false; 
 char Afi_sexo; 
+final boolean Afi_saldoUnique = false; 
+final boolean Afi_saldoNotNull = false; 
 int Afi_saldo; 
+final boolean Afi_puntosUnique = false; 
+final boolean Afi_puntosNotNull = false; 
 int Afi_puntos; 
 LinkedList<Afiliado> table = new LinkedList<Afiliado>(); 
 public Afiliado(int Afi_idTarjeta, int Afi_documento, String Afi_nombre, int Afi_edad, int Afi_telefono, String Afi_correo, int Afi_saldo, int Afi_puntos){ 

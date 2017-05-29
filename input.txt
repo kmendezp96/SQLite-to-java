@@ -22,3 +22,5 @@ Afi_sexo char,
 Afi_saldo int,
 Afi_puntos int
 );
+insert into ex2 (a,b,c,d,e,f,g,j,k,l) values ("aa","aa","aa",3,3,true,"aaa","aaa","aaa","aaa");
+insert into ex2 (a,b,c,d,e,f,g,j,k,l) values ("bb","bb","b",2,2,true,"aaa","bbb","aaa","aaa");
