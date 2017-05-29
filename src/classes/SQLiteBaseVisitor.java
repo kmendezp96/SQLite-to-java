@@ -595,7 +595,53 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDelete_stmt(SQLiteParser.Delete_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDelete_stmt(SQLiteParser.Delete_stmtContext ctx) { 
+		fileName = "Main";
+		/*try{
+			contentMain=contentMain+ "for"
+			ctx.
+			if(ctx. != null){
+				for (int i=0;i<ctx.column_name().size();i++){
+					columns.add(i,ctx.column_name().get(i).getText());
+				}
+			
+			}
+			if (ctx.expr() != null){
+				for (int i=0;i<ctx.expr().size();i++){
+				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
+				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
+					contentMain =contentMain+"temp"+countInserts+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
+				}
+				contentMain = contentMain + "holder.table.push(temp"+countInserts+"); \n ";
+			}
+			fw = new FileWriter(fileName+ ".java");
+			bw = new BufferedWriter(fw);
+			bw.write(contentMain);
+
+			System.out.println("Done");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+
+		}*/
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -680,9 +726,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				for (int i=0;i<ctx.expr().size();i++){
 				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
 				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
-					contentMain =contentMain+"temp"+countInserts+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
+					contentMain =contentMain+"temp"+countInserts+className+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
 				}
-				contentMain = contentMain + "holder.table.push(temp"+countInserts+"); \n ";
+				contentMain = contentMain + "holder"+className+".table.push(temp"+countInserts+className+"); \n ";
 			}
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
