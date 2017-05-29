@@ -25,3 +25,4 @@ foreign key Afi_puntos references artist(artist_id)
 insert into ex2 (a,b,c,d,e,f,g,j,k,l) values ("aa","aa","aa",3,3,true,"aaa","aaa","aaa","aaa");
 insert into ex2 (a,b,c,d,e,f,g,j,k,l) values ("bb","bb","b",2,2,true,"aaa","bbb","aaa","aaa");
 insert into Afiliado (Afi_idTarjeta,Afi_documento,Afi_nombre,Afi_edad,Afi_telefono,Afi_correo,Afi_sexo,Afi_saldo,Afi_puntos) values (1021,1011722543, 'Carlos Rodriguez Perez', 32,5487321,'Rodriguez_carlos@gmail.com','M', 43300,  754 );
+select all from Afiliado;

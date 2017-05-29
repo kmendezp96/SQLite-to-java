@@ -690,7 +690,68 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFactored_select_stmt(SQLiteParser.Factored_select_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFactored_select_stmt(SQLiteParser.Factored_select_stmtContext ctx) {
+		String select = "";	
+		if(ctx.select_core(0).K_ALL()!=null){
+			select = ctx.select_core(0).result_column(0).column_alias().getText()+" nuevo = new "+ctx.select_core(0).result_column(0).column_alias().getText()+"();\n";
+			select = select + "for (java.lang.reflect.Field field : nuevo.getClass().getDeclaredFields()) {";
+			select += "\n	field.setAccessible(true);";
+			select += "\n	String name = field.getName();";
+			select += "\n	if(name!=\"table\"){";
+			select += "\n	int espaciado =20-name.length();";
+			select += "\n	String espacio=\"\";";
+			select += "\n	for (int i=0;i<espaciado;i++){";
+			select += "\n		espacio+=\" \";";
+			select += "\n	}";
+			select += "\n	System.out.print(name+espacio);";
+			select += "\n	for(int i=0;i<holder.table.size();i++){";
+			select += "\n		holder.table.get(i).metodoprueba(name);";
+			select += "\n	}";
+			select += "\n	System.out.println();";
+			select += "\n	}";
+			select += "\n}";
+		}	
+		
+		else{
+			String tex;
+			int nparametros = ctx.select_core(0).result_column().size();
+			select += "\nint espaciado;";
+			select += "\nString espacio;\n\n";			
+			for(int i = 0; i < nparametros;i++){
+				tex = ctx.select_core(0).result_column(i).expr().column_name().any_name().getText();
+				select += "String "+tex+" = "+"\""+tex+"\";\n";
+				select += "espaciado = 20-"+tex+".length();\n";
+				select += "espacio=\"\";\n";
+				select += "for (int j=0;j<espaciado;j++){\n";
+				select += "\tespacio+=\" \";\n";
+				select += "}\n";
+				select += "System.out.print("+tex+"+espacio);\n";				
+				select += "\n";				
+			}
+
+			select += "System.out.println();\n";
+			select += "for(int i=0;i<holder.table.size();i++){\n";	
+			for(int i = 0; i < nparametros;i++){
+				select += "\n";
+				tex = ctx.select_core(0).result_column(i).expr().column_name().any_name().getText();
+				select += "\t"+tex+" = String.valueOf(holder.table.get(i)."+tex+");\n";
+				select += "\tespaciado =20-"+tex+".length();\n";
+				select += "\tespacio=\"\";\n";
+				select += "\tfor (int j=0;j<espaciado;j++){\n";
+				select += "\t\tespacio+=\" \";\n";
+				select += "\t}\n";
+				select += "\tSystem.out.print("+tex+"+espacio);\n";			
+						
+			}
+			select += "\n\tSystem.out.println();\n";
+			select += "}\n";
+			
+		}
+		
+	
+		System.out.println(select);	
+		return visitChildren(ctx); 
+	}
 	/**
 	 * {@inheritDoc}
 	 *
