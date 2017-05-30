@@ -24,6 +24,8 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	private String fileName = "";	
 	private int countInserts=0;
 	private String classBuf = "";
+	public String out="";
+	
 	String contentMain = "package translate; \n "+
 			"class Main { \n"+
 			"public static void main(String []args) throws IllegalArgumentException, IllegalAccessException{\n";
@@ -549,7 +551,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			bw = new BufferedWriter(fw);
 			bw.write(content);
 
-			System.out.println("Done");
+			out=out+"clase "+fileName+" creada! \n";
 
 		} catch (IOException e) {
 
@@ -633,8 +635,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
-
-			System.out.println("delete done");
+			out = out + "borrado escrito en Main \n";
 
 		} catch (IOException e) {
 
@@ -843,8 +844,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
-
-			System.out.println("Done");
+			out = out + "Busqueda escrita en Main \n";
 
 		} catch (IOException e) {
 
@@ -920,8 +920,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
-
-			System.out.println("Done");
+			out=out+"insert escrito en Main \n ";
 
 		} catch (IOException e) {
 
@@ -1012,7 +1011,63 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUpdate_stmt(SQLiteParser.Update_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitUpdate_stmt(SQLiteParser.Update_stmtContext ctx) {
+		if(ctx.K_WHERE()!=null){
+		
+			
+		}
+		else {
+			String className = ctx.qualified_table_name().getText();
+			LinkedList <String> columns= new LinkedList<String>();
+			fileName = "Main";
+			contentMain = contentMain+"for (int j=0;j<holder"+className+".table.size(); j++) { \n";
+			
+			try{
+				
+				if(ctx.column_name () != null){
+					for (int i=0;i<ctx.column_name().size();i++){
+						String expre=ctx.expr(i).getText();
+						expre=expre.replace("\'", "\"");
+						if (i==ctx.column_name().size()-1){
+							contentMain=contentMain+"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n } \n";
+						}else{
+							contentMain=contentMain+"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n";
+							
+						}
+					}
+				
+				}
+				
+				fw = new FileWriter(fileName+ ".java");
+				bw = new BufferedWriter(fw);
+				bw.write(contentMain);
+
+				out=out+"update escrito en Main \n ";
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				try {
+
+					if (bw != null)
+						bw.close();
+
+					if (fw != null)
+						fw.close();
+
+				} catch (IOException ex) {
+
+					ex.printStackTrace();
+
+				}
+
+			}
+			
+		}
+		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
