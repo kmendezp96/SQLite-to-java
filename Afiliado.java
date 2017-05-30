@@ -42,15 +42,15 @@ this.Afi_puntos = Afi_puntos;
  }
  public void result(String a){ 
 System.out.print("\t\t|"); 
-if(a == Afi_idTarjeta)System.out.print(Afi_idTarjeta); 
-if(a == Afi_documento)System.out.print(Afi_documento); 
-if(a == Afi_nombre)System.out.print(Afi_nombre); 
-if(a == Afi_edad)System.out.print(Afi_edad); 
-if(a == Afi_telefono)System.out.print(Afi_telefono); 
-if(a == Afi_correo)System.out.print(Afi_correo); 
-if(a == Afi_sexo)System.out.print(Afi_sexo); 
-if(a == Afi_saldo)System.out.print(Afi_saldo); 
-if(a == Afi_puntos) System.out.print(Afi_puntos); 
+if(a.equals( "Afi_idTarjeta" ))System.out.print(Afi_idTarjeta); 
+if(a.equals( "Afi_documento" ))System.out.print(Afi_documento); 
+if(a.equals( "Afi_nombre" ))System.out.print(Afi_nombre); 
+if(a.equals( "Afi_edad" ))System.out.print(Afi_edad); 
+if(a.equals( "Afi_telefono" ))System.out.print(Afi_telefono); 
+if(a.equals( "Afi_correo" ))System.out.print(Afi_correo); 
+if(a.equals( "Afi_sexo" ))System.out.print(Afi_sexo); 
+if(a.equals( "Afi_saldo" ))System.out.print(Afi_saldo); 
+if(a.equals( "Afi_puntos" )) System.out.print(Afi_puntos); 
  } 
 
  public Afiliado() { 

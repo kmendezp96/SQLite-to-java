@@ -48,16 +48,16 @@ this.l = l;
  }
  public void result(String a){ 
 System.out.print("\t\t|"); 
-if(a == a)System.out.print(a); 
-if(a == b)System.out.print(b); 
-if(a == c)System.out.print(c); 
-if(a == d)System.out.print(d); 
-if(a == e)System.out.print(e); 
-if(a == f)System.out.print(f); 
-if(a == g)System.out.print(g); 
-if(a == j)System.out.print(j); 
-if(a == k)System.out.print(k); 
-if(a == l) System.out.print(l); 
+if(a.equals( "a" ))System.out.print(a); 
+if(a.equals( "b" ))System.out.print(b); 
+if(a.equals( "c" ))System.out.print(c); 
+if(a.equals( "d" ))System.out.print(d); 
+if(a.equals( "e" ))System.out.print(e); 
+if(a.equals( "f" ))System.out.print(f); 
+if(a.equals( "g" ))System.out.print(g); 
+if(a.equals( "j" ))System.out.print(j); 
+if(a.equals( "k" ))System.out.print(k); 
+if(a.equals( "l" )) System.out.print(l); 
  } 
 
  public ex2() { 

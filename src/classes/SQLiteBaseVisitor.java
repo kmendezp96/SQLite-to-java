@@ -144,9 +144,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						
 					}
 					if (i==ctx.column_def().size()-1){
-						contentMet=contentMet+"if(a == "+id+")"+" System.out.print("+id+"); \n } \n";
+						contentMet=contentMet+"if(a.equals( \""+id+"\" ))"+" System.out.print("+id+"); \n } \n";
 					} else {
-						contentMet=contentMet+"if(a == "+id+")"+"System.out.print("+id+"); \n";
+						contentMet=contentMet+"if(a.equals( \""+id+"\" ))"+"System.out.print("+id+"); \n";
 					}
 						/*switch (type) {
 		            case "int":  type = "int";
