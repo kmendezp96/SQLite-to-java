@@ -27,7 +27,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	public String out="";
 	
 	String contentMain = "package translate; \n "+
-			"class Main { \n"+
+			"public class Main { \n"+
 			"public static void main(String []args) throws IllegalArgumentException, IllegalAccessException{\n";
 	BufferedWriter bw = null;
 	FileWriter fw = null;
@@ -547,7 +547,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				content = content+constructorEmptyHead;
 				content = content+constructorEmptyBody;
 			}
-			fw = new FileWriter(fileName+ ".java");
+			fw = new FileWriter("C:/Users/Pc/workspace/SQLite-to-java/src/translate/"+fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(content);
 
@@ -632,7 +632,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			"if (holder"+className+".table.get(d)."+expresion+") { \n"+	
 			"holder"+className+".table.remove(d); \n } \n } \n";
 			
-			fw = new FileWriter(fileName+ ".java");
+			fw = new FileWriter("C:/Users/Pc/workspace/SQLite-to-java/src/translate/"+fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
 			out = out + "borrado escrito en Main \n";
@@ -749,6 +749,11 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				else if(operador.equals("==")||operador.equals("=")){
 					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").equals(\""+con_b+"\")))\n";
 				}
+				else if(operador.equals("like")){
+					con_b = con_b.replace("\'", "");
+					con_b = con_b.replace("%",".*");
+					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").matches(\""+con_b+"\")))\n";	
+				}
 				else{
 					select+="if (holder.table.get(i)."+con_a+operador+con_b+")\n";
 				}
@@ -789,7 +794,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				select += "\n";
 				String con_b =ctx.select_core(0).expr(0).expr(1).getText();
 				String operador = ctx.select_core(0).expr(0).getChild(1).getText();
-				if(operador.equals("<>") || operador.equals("!=")||operador.equals("==")||operador.equals("=")){
+				if(operador.equals("like")||operador.equals("<>") || operador.equals("!=")||operador.equals("==")||operador.equals("=")){
 					select += "String con_b;\n";			
 					select += "con_b = \""+con_b+"\";\n";
 				}
@@ -805,12 +810,21 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			if(ctx.select_core(0).K_WHERE()!=null){
 				select += "\n";
 				String con_a =ctx.select_core(0).expr(0).expr(0).getText();
+				String con_b =ctx.select_core(0).expr(0).expr(1).getText();
 				String operador = ctx.select_core(0).expr(0).getChild(1).getText();
 				if(operador.equals("<>") || operador.equals("!=")){
 					select+="if (!(String.valueOf(holder.table.get(i)."+con_a+").equals(con_b))){\n";	
 				}
 				else if(operador.equals("==")||operador.equals("=")){
-					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").equals(con_b))){\n";	
+					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").equals(con_b))){\n";
+				}
+				else if(operador.equals("like")){
+					select += "\ncon_b = con_b.replace(\"\\\'\", \"\");\n";
+					select += "con_b = con_b.replace(\"%\",\".*\");\n";
+					
+					con_b = con_b.replace("\'", "");
+					con_b = con_b.replace("%",".*");
+					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").matches(con_b))){\n";	
 				}
 				else{
 					select+="if (holder.table.get(i)."+con_a+operador+"con_b){\n";	
@@ -841,7 +855,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		
 		fileName = "Main";
 		try{
-			fw = new FileWriter(fileName+ ".java");
+			fw = new FileWriter("C:/Users/Pc/workspace/SQLite-to-java/src/translate/"+fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
 			out = out + "Busqueda escrita en Main \n";
@@ -913,11 +927,13 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				for (int i=0;i<ctx.expr().size();i++){
 				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
 				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
-					contentMain =contentMain+"temp"+countInserts+className+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
+					String val=ctx.expr().get(i).getText();
+					val=val.replace("\'", "\"");
+					contentMain =contentMain+"temp"+countInserts+className+"."+columns.get(i) +" = "+val+"; \n ";
 				}
 				contentMain = contentMain + "holder"+className+".table.push(temp"+countInserts+className+"); \n ";
 			}
-			fw = new FileWriter(fileName+ ".java");
+			fw = new FileWriter("C:/Users/Pc/workspace/SQLite-to-java/src/translate/"+fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
 			out=out+"insert escrito en Main \n ";
@@ -1013,8 +1029,78 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 */
 	@Override public T visitUpdate_stmt(SQLiteParser.Update_stmtContext ctx) {
 		if(ctx.K_WHERE()!=null){
-		
+			String className = ctx.qualified_table_name().getText();
+			String column=ctx.expr(ctx.column_name().size()).expr(0).column_name().getText();
+			String val=ctx.expr(ctx.column_name().size()).expr(1).literal_value().getText();		
+			String expresion="";
+			String op = ctx.expr(ctx.column_name().size()).getText().substring(ctx.expr(ctx.column_name().size()).getText().indexOf(column)+column.length(),ctx.expr(ctx.column_name().size()).getText().indexOf(val));
+			//System.out.println(op);
+			val=val.replace("\'", "\"");
+			if (op.matches(".*=.*")){
+			    op="==";
+			    }
+			if (op.matches(".*like.*")){
+				val=val.replace("%", ".*");
+			    expresion=column+".matches("+val+")";
+			    expresion=expresion.replace("\'", "\"");
+			    //System.out.println(expresion);
+			    }
+			else{
+				expresion=column+op+val;
+			}
+			LinkedList <String> columns= new LinkedList<String>();
+			fileName = "Main";
+			contentMain = contentMain+"for (int j=0;j<holder"+className+".table.size(); j++) { \n";
 			
+			try{
+				
+				if(ctx.column_name () != null){
+					for (int i=0;i<ctx.column_name().size();i++){
+						String expre=ctx.expr(i).getText();
+						expre=expre.replace("\'", "\"");
+						if (i==ctx.column_name().size()-1){
+							contentMain=contentMain+ 
+									"if (holder"+className+".table.get(j)."+expresion+") { \n"+	
+									"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n } \n } \n";
+									
+							//contentMain=contentMain+"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n } \n";
+						}else{
+							contentMain=contentMain+ 
+									"if (holder"+className+".table.get(j)."+expresion+") { \n"+	
+									"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n } \n";
+							//contentMain=contentMain+"holder"+className+".table.get(j)."+ctx.column_name().get(i).getText()+" = "+expre+"; \n";
+							
+						}
+					}
+				
+				}
+				
+				fw = new FileWriter(fileName+ ".java");
+				bw = new BufferedWriter(fw);
+				bw.write(contentMain);
+
+				out=out+"update escrito en Main \n ";
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				try {
+
+					if (bw != null)
+						bw.close();
+
+					if (fw != null)
+						fw.close();
+
+				} catch (IOException ex) {
+
+					ex.printStackTrace();
+
+				}
+			}
 		}
 		else {
 			String className = ctx.qualified_table_name().getText();
@@ -1038,7 +1124,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				
 				}
 				
-				fw = new FileWriter(fileName+ ".java");
+				fw = new FileWriter("C:/Users/Pc/workspace/SQLite-to-java/src/translate/"+fileName+ ".java");
 				bw = new BufferedWriter(fw);
 				bw.write(contentMain);
 

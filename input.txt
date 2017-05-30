@@ -9,5 +9,5 @@ insert into Usuario (a,b,c) values (2,"text2",2);
 insert into Usuario (a,b,c) values (3,"text3",3);
 insert into Usuario (a,b,c) values (4,"text4",4);
 
-update company set address = 'texas', salary= 20000;
-select all from Usuario where c >= 3.0;
+update Usuario set a = 30 where b like '%ext4';
+select a,c from Usuario where b like '%ext4';
