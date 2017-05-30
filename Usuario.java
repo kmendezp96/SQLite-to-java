@@ -13,9 +13,9 @@ this.c = c;
  }
  public void result(String a){ 
 System.out.print("\t\t|"); 
-if(a.equals( "a" ))System.out.print(a); 
-if(a.equals( "b" ))System.out.print(b); 
-if(a.equals( "c" )) System.out.print(c); 
+if(a.equals( "a" ))System.out.print(this.a); 
+if(a.equals( "b" ))System.out.print(this.b); 
+if(a.equals( "c" )) System.out.print(this.c); 
  } 
 
  public Usuario() { 

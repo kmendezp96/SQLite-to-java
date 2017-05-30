@@ -36,7 +36,7 @@ for (java.lang.reflect.Field field : nuevo.getClass().getDeclaredFields()) {
 	}
 	System.out.print(name+espacio);
 	for(int i=0;i<holder.table.size();i++){
-if (holder.table.get(i).c>1.0)
+if (holder.table.get(i).c>=3.0)
 
 		holder.table.get(i).result(name);
 	}
