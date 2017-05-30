@@ -128,6 +128,9 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				String constructorEmptyHead="\n public "+fileName+"() { \n";
 				String constructorBody="";
 				String constructorEmptyBody="";
+				String contentMet="\n public void result(String a){ \n"+
+				"System.out.print(\"\\t\\t|\"); \n";
+
 				for (int i=0;i<ctx.column_def().size();i++){
 					String type=ctx.column_def().get(i).type_name().getText();
 					String id=ctx.column_def().get(i).column_name().getText();
@@ -138,8 +141,14 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						type="int";
 						//System.out.println(ctx.column_def().get(i).getText());
 						id= ctx.column_def().get(i).getText().substring(idI, idF); 
+						
 					}
-					/*switch (type) {
+					if (i==ctx.column_def().size()-1){
+						contentMet=contentMet+"if(a == "+id+")"+" System.out.print("+id+"); \n } \n";
+					} else {
+						contentMet=contentMet+"if(a == "+id+")"+"System.out.print("+id+"); \n";
+					}
+						/*switch (type) {
 		            case "int":  type = "int";
 		                     break;
 		            case "integer":  type = "int";
@@ -534,6 +543,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				content = content + "LinkedList<"+fileName+"> table = new LinkedList<"+fileName+">(); \n";  
 				content = content+constructorHead;
 				content = content+constructorBody;
+				content = content+contentMet;
 				content = content+constructorEmptyHead;
 				content = content+constructorEmptyBody;
 			}
@@ -597,28 +607,36 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 */
 	@Override public T visitDelete_stmt(SQLiteParser.Delete_stmtContext ctx) { 
 		fileName = "Main";
-		/*try{
-			contentMain=contentMain+ "for"
-			ctx.
-			if(ctx. != null){
-				for (int i=0;i<ctx.column_name().size();i++){
-					columns.add(i,ctx.column_name().get(i).getText());
-				}
+		try{
 			
+			String className=ctx.qualified_table_name().getText();
+			String column=ctx.expr().expr(0).column_name().getText();
+			String val=ctx.expr().expr(1).literal_value().getText();		
+			String expresion="";
+			String op = ctx.expr().getText().substring(ctx.expr().getText().indexOf(column)+column.length(),ctx.expr().getText().indexOf(val));
+			val=val.replace("\'", "\"");
+			if (op.matches(".*=.*")){
+			    op="==";
+			    }
+			if (op.matches(".*like.*")){
+				val=val.replace("%", ".*");
+			    expresion=column+".matches("+val+")";
+			    expresion=expresion.replace("\'", "\"");
+			    //System.out.println(expresion);
+			    }
+			else{
+				expresion=column+op+val;
 			}
-			if (ctx.expr() != null){
-				for (int i=0;i<ctx.expr().size();i++){
-				//	content = content+"if ("+columns.get(i)+"NotNull == true && "+ctx.expr().get(i).getText()+" == null ) { \n"+
-				//"System.out.println( \"The field doesn't accept null values. \" ); \n } else{";
-					contentMain =contentMain+"temp"+countInserts+"."+columns.get(i) +" = "+ctx.expr().get(i).getText()+"; \n ";
-				}
-				contentMain = contentMain + "holder.table.push(temp"+countInserts+"); \n ";
-			}
+			contentMain=contentMain+ "for (int d=0;d<holder"+className+".table.size();d++) { \n "+
+			//className+"del = "holder"+className+".table.get(i); \n"+
+			"if (holder"+className+".table.get(d)."+expresion+") { \n"+	
+			"holder"+className+".table.remove(d); \n } \n } \n";
+			
 			fw = new FileWriter(fileName+ ".java");
 			bw = new BufferedWriter(fw);
 			bw.write(contentMain);
 
-			System.out.println("Done");
+			System.out.println("delete done");
 
 		} catch (IOException e) {
 
@@ -640,7 +658,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 
 			}
 
-		}*/
+		}
 		return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

@@ -40,6 +40,19 @@ this.Afi_correo = Afi_correo;
 this.Afi_saldo = Afi_saldo; 
 this.Afi_puntos = Afi_puntos; 
  }
+ public void result(String a){ 
+System.out.print("\t\t|"); 
+if(a == Afi_idTarjeta)System.out.print(Afi_idTarjeta); 
+if(a == Afi_documento)System.out.print(Afi_documento); 
+if(a == Afi_nombre)System.out.print(Afi_nombre); 
+if(a == Afi_edad)System.out.print(Afi_edad); 
+if(a == Afi_telefono)System.out.print(Afi_telefono); 
+if(a == Afi_correo)System.out.print(Afi_correo); 
+if(a == Afi_sexo)System.out.print(Afi_sexo); 
+if(a == Afi_saldo)System.out.print(Afi_saldo); 
+if(a == Afi_puntos) System.out.print(Afi_puntos); 
+ } 
+
  public Afiliado() { 
 this.Afi_idTarjeta = 0; 
 this.Afi_documento = 0; 

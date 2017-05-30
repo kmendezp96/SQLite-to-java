@@ -37,4 +37,24 @@ temp2Afiliado.Afi_idTarjeta = 1021;
  temp2Afiliado.Afi_saldo = 43300; 
  temp2Afiliado.Afi_puntos = 754; 
  holderAfiliado.table.push(temp2Afiliado); 
- 
+ Afiliado temp3Afiliado = new Afiliado(); 
+temp3Afiliado.Afi_idTarjeta = 1022; 
+ temp3Afiliado.Afi_documento = 1011722543; 
+ temp3Afiliado.Afi_nombre = 'Carlos daniel Perez'; 
+ temp3Afiliado.Afi_edad = 22; 
+ temp3Afiliado.Afi_telefono = 5487321; 
+ temp3Afiliado.Afi_correo = 'Rodriguez_carlos@gmail.com'; 
+ temp3Afiliado.Afi_sexo = 'M'; 
+ temp3Afiliado.Afi_saldo = 43300; 
+ temp3Afiliado.Afi_puntos = 754; 
+ holderAfiliado.table.push(temp3Afiliado); 
+ for (int d=0;d<holderAfiliado.table.size();d++) { 
+ if (holderAfiliado.table.get(d).Afi_edad>30) { 
+holderAfiliado.table.remove(d); 
+ } 
+ } 
+for (int d=0;d<holderAfiliado.table.size();d++) { 
+ if (holderAfiliado.table.get(d).Afi_nombre.matches("daniel.*")) { 
+holderAfiliado.table.remove(d); 
+ } 
+ } 

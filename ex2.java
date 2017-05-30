@@ -46,6 +46,20 @@ this.j = j;
 this.k = k; 
 this.l = l; 
  }
+ public void result(String a){ 
+System.out.print("\t\t|"); 
+if(a == a)System.out.print(a); 
+if(a == b)System.out.print(b); 
+if(a == c)System.out.print(c); 
+if(a == d)System.out.print(d); 
+if(a == e)System.out.print(e); 
+if(a == f)System.out.print(f); 
+if(a == g)System.out.print(g); 
+if(a == j)System.out.print(j); 
+if(a == k)System.out.print(k); 
+if(a == l) System.out.print(l); 
+ } 
+
  public ex2() { 
 this.a = ""; 
 this.b = ""; 
