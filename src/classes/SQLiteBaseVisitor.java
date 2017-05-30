@@ -24,11 +24,13 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	private String fileName = "";
+	private String fileName = "";	
 	private String fileNameMain = "Main";
 	private int countInserts=0;
-	String contentMain = "package translate; \n import java.util.LinkedList; \n "+
-			"class Main { \n";
+	private String classBuf = "";
+	String contentMain = "package translate; \n "+
+			"class Main { \n"+
+			"public static void main(String []args) throws IllegalArgumentException, IllegalAccessException{\n";
 	BufferedWriter bw = null;
 	FileWriter fw = null;
 	@Override public T visitParse(SQLiteParser.ParseContext ctx) { 
@@ -470,12 +472,12 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"float "+id+"){ \n";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"float "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("float")){
@@ -483,12 +485,12 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"float "+id+"){ \n";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"float "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("double")){
@@ -496,12 +498,12 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 						if (i==ctx.column_def().size()-1) {
 							constructorHead=constructorHead+"double "+id+"){ \n";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n }";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n } \n }";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n } \n }";
 						}
 						else {
 							constructorHead=constructorHead+"double "+id+", ";
 							constructorBody=constructorBody+"this."+id+" = "+id+"; \n";
-							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0.0"+"; \n";
+							constructorEmptyBody=constructorEmptyBody+"this."+id+" = "+"0"+"; \n";
 						}
 					}
 					if (type.startsWith("decimal")){
@@ -709,10 +711,24 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitFactored_select_stmt(SQLiteParser.Factored_select_stmtContext ctx) {
-		String select = "";
+		String from = "";
+		String tabla;
 		
 		if(ctx.select_core(0).K_ALL()!=null){
-			select = ctx.select_core(0).result_column(0).column_alias().getText()+" nuevo = new "+ctx.select_core(0).result_column(0).column_alias().getText()+"();\n";
+			tabla = ctx.select_core(0).result_column(0).column_alias().getText();
+			from = tabla+" holder = new "+tabla+"();\n";
+			from += "holder = holder"+tabla+";\n";
+		}
+		else{
+			tabla = ctx.select_core(0).table_or_subquery(0).table_name().any_name().getText();			
+			from = tabla+" holder = new "+tabla+"();\n";
+			from += "holder = holder"+tabla+";\n";
+		}
+		
+		String select = from;
+		
+		if(ctx.select_core(0).K_ALL()!=null){
+			select += ctx.select_core(0).result_column(0).column_alias().getText()+" nuevo = new "+ctx.select_core(0).result_column(0).column_alias().getText()+"();\n";
 			select = select + "for (java.lang.reflect.Field field : nuevo.getClass().getDeclaredFields()) {";
 			select += "\n	field.setAccessible(true);";
 			select += "\n	String name = field.getName();";
@@ -728,7 +744,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			select += "\n	}";
 			select += "\n	System.out.println();";
 			select += "\n	}";
-			select += "\n}";
+			select += "\n}\n";
 		}	
 		
 		
@@ -800,10 +816,47 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				select += "\n\t}\n";
 			}
 			select += "}\n";
-		}		
+		}
+		select += "}\n";
+		select += "}\n";
+		contentMain += select;
 		
-		System.out.println(select);
-		return visitChildren(ctx); 
+		fileName = "Main";
+		try{
+			fw = new FileWriter(fileName+ ".java");
+			bw = new BufferedWriter(fw);
+			bw.write(contentMain);
+
+			System.out.println("Done");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+
+		}
+		
+		
+		
+		
+		
+		return visitChildren(ctx);
+		
 	}
 
 	/**
@@ -815,9 +868,11 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	@Override public T visitInsert_stmt(SQLiteParser.Insert_stmtContext ctx) { 
 		String className = ctx.table_name().getText();
 		LinkedList <String> columns= new LinkedList<String>();
-		if(countInserts==0){		
+		if(!(className.equals(classBuf))){
+			
 		contentMain = contentMain+
 		className+" holder"+className+" = new "+className+"(); \n";
+		classBuf=className;
 		}
 
 		contentMain = contentMain+className+" temp"+countInserts+className+" = new "+className+"(); \n";

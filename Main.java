@@ -1,40 +1,75 @@
 package translate; 
- import java.util.LinkedList; 
  class Main { 
+public static void main(String []args) throws IllegalArgumentException, IllegalAccessException{
 ex2 holderex2 = new ex2(); 
 ex2 temp0ex2 = new ex2(); 
-temp0ex2.a = "aa"; 
- temp0ex2.b = "aa"; 
- temp0ex2.c = "aa"; 
- temp0ex2.d = 3; 
- temp0ex2.e = 3; 
- temp0ex2.f = true; 
- temp0ex2.g = "aaa"; 
- temp0ex2.j = "aaa"; 
- temp0ex2.k = "aaa"; 
- temp0ex2.l = "aaa"; 
+temp0ex2.a = 1; 
+ temp0ex2.b = "text1"; 
+ temp0ex2.c = 1.0; 
  holderex2.table.push(temp0ex2); 
  ex2 temp1ex2 = new ex2(); 
-temp1ex2.a = "bb"; 
- temp1ex2.b = "bb"; 
- temp1ex2.c = "b"; 
- temp1ex2.d = 2; 
- temp1ex2.e = 2; 
- temp1ex2.f = true; 
- temp1ex2.g = "aaa"; 
- temp1ex2.j = "bbb"; 
- temp1ex2.k = "aaa"; 
- temp1ex2.l = "aaa"; 
+temp1ex2.a = 1; 
+ temp1ex2.b = "text1"; 
+ temp1ex2.c = 1.0; 
  holderex2.table.push(temp1ex2); 
- Afiliado temp2Afiliado = new Afiliado(); 
-temp2Afiliado.Afi_idTarjeta = 1021; 
- temp2Afiliado.Afi_documento = 1011722543; 
- temp2Afiliado.Afi_nombre = 'Carlos Rodriguez Perez'; 
- temp2Afiliado.Afi_edad = 32; 
- temp2Afiliado.Afi_telefono = 5487321; 
- temp2Afiliado.Afi_correo = 'Rodriguez_carlos@gmail.com'; 
- temp2Afiliado.Afi_sexo = 'M'; 
- temp2Afiliado.Afi_saldo = 43300; 
- temp2Afiliado.Afi_puntos = 754; 
- holderAfiliado.table.push(temp2Afiliado); 
- 
+ beta holder = new beta();
+holder = holderbeta;
+
+int espaciado;
+String espacio;
+
+String a = "a";
+espaciado = 20-a.length();
+espacio="";
+for (int j=0;j<espaciado;j++){
+	espacio+=" ";
+}
+System.out.print(a+espacio);
+
+String b = "b";
+espaciado = 20-b.length();
+espacio="";
+for (int j=0;j<espaciado;j++){
+	espacio+=" ";
+}
+System.out.print(b+espacio);
+
+String c = "c";
+espaciado = 20-c.length();
+espacio="";
+for (int j=0;j<espaciado;j++){
+	espacio+=" ";
+}
+System.out.print(c+espacio);
+
+System.out.println();
+for(int i=0;i<holder.table.size();i++){
+
+	a = String.valueOf(holder.table.get(i).a);
+	espaciado =20-a.length();
+	espacio="";
+	for (int j=0;j<espaciado;j++){
+		espacio+=" ";
+	}
+	System.out.print(a+espacio);
+
+	b = String.valueOf(holder.table.get(i).b);
+	espaciado =20-b.length();
+	espacio="";
+	for (int j=0;j<espaciado;j++){
+		espacio+=" ";
+	}
+	System.out.print(b+espacio);
+
+	c = String.valueOf(holder.table.get(i).c);
+	espaciado =20-c.length();
+	espacio="";
+	for (int j=0;j<espaciado;j++){
+		espacio+=" ";
+	}
+	System.out.print(c+espacio);
+
+	System.out.println();
+}
+}
+}
