@@ -709,7 +709,8 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitFactored_select_stmt(SQLiteParser.Factored_select_stmtContext ctx) {
-		String select = "";	
+		String select = "";
+		
 		if(ctx.select_core(0).K_ALL()!=null){
 			select = ctx.select_core(0).result_column(0).column_alias().getText()+" nuevo = new "+ctx.select_core(0).result_column(0).column_alias().getText()+"();\n";
 			select = select + "for (java.lang.reflect.Field field : nuevo.getClass().getDeclaredFields()) {";
@@ -730,6 +731,8 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			select += "\n}";
 		}	
 		
+		
+		
 		else{
 			String tex;
 			int nparametros = ctx.select_core(0).result_column().size();
@@ -744,11 +747,43 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				select += "\tespacio+=\" \";\n";
 				select += "}\n";
 				select += "System.out.print("+tex+"+espacio);\n";				
-				select += "\n";				
+				select += "\n";
 			}
-
 			select += "System.out.println();\n";
-			select += "for(int i=0;i<holder.table.size();i++){\n";	
+			
+			if(ctx.select_core(0).K_WHERE()!=null){
+				select += "\n";
+				String con_b =ctx.select_core(0).expr(0).expr(1).getText();
+				String operador = ctx.select_core(0).expr(0).getChild(1).getText();
+				if(operador.equals("<>") || operador.equals("!=")||operador.equals("==")||operador.equals("=")){
+					select += "String con_b;\n";			
+					select += "con_b = \""+con_b+"\";\n";
+				}
+				else{
+					select += "double con_b;\n";			
+					select += "con_b = "+con_b+";\n";
+				}				
+			}		
+			
+			
+			select += "for(int i=0;i<holder.table.size();i++){\n";
+			
+			if(ctx.select_core(0).K_WHERE()!=null){
+				select += "\n";
+				String con_a =ctx.select_core(0).expr(0).expr(0).getText();
+				String operador = ctx.select_core(0).expr(0).getChild(1).getText();
+				if(operador.equals("<>") || operador.equals("!=")){
+					select+="if (!(String.valueOf(holder.table.get(i)."+con_a+").equals(con_b))){\n";	
+				}
+				else if(operador.equals("==")||operador.equals("=")){
+					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").equals(con_b))){\n";	
+				}
+				else{
+					select+="if (holder.table.get(i)."+con_a+operador+"con_b){\n";	
+				}
+				
+			}	
+			
 			for(int i = 0; i < nparametros;i++){
 				select += "\n";
 				tex = ctx.select_core(0).result_column(i).expr().column_name().any_name().getText();
@@ -758,18 +793,19 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 				select += "\tfor (int j=0;j<espaciado;j++){\n";
 				select += "\t\tespacio+=\" \";\n";
 				select += "\t}\n";
-				select += "\tSystem.out.print("+tex+"+espacio);\n";			
-						
+				select += "\tSystem.out.print("+tex+"+espacio);\n";								
 			}
 			select += "\n\tSystem.out.println();\n";
+			if(ctx.select_core(0).K_WHERE()!=null){
+				select += "\n\t}\n";
+			}
 			select += "}\n";
-			
-		}
+		}		
 		
-	
-		System.out.println(select);	
+		System.out.println(select);
 		return visitChildren(ctx); 
 	}
+
 	/**
 	 * {@inheritDoc}
 	 *
