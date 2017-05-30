@@ -1,10 +1,7 @@
 // Generated from SQLite.g4 by ANTLR 4.6
 package classes;
 import java.io.BufferedWriter;
-import java.util.Date;
 import java.util.LinkedList;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
@@ -25,7 +22,6 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	private String fileName = "";	
-	private String fileNameMain = "Main";
 	private int countInserts=0;
 	private String classBuf = "";
 	String contentMain = "package translate; \n "+
@@ -200,7 +196,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 		                     break;
 		        }*/
 					//System.out.println(type+" "+ type.contains("notnull"));
-					if (type.contains("unique")){
+					/*if (type.contains("unique")){
 						
 						content = content + "final boolean "+id+"Unique = true; \n";
 					}
@@ -213,7 +209,7 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 					}else {
 						
 						content = content + "final boolean "+id+"NotNull = false; \n";
-					}
+					}*/
 					
 					if (type.contains("primarykey")){
 						contentTemp = contentTemp + "final int primaryKey= "+id+"; \n";
@@ -739,8 +735,29 @@ public class SQLiteBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 			select += "\n		espacio+=\" \";";
 			select += "\n	}";
 			select += "\n	System.out.print(name+espacio);";
-			select += "\n	for(int i=0;i<holder.table.size();i++){";
-			select += "\n		holder.table.get(i).metodoprueba(name);";
+			select += "\n	for(int i=0;i<holder.table.size();i++){";	
+			
+			if(ctx.select_core(0).K_WHERE()!=null){
+				select += "\n";
+				String con_a =ctx.select_core(0).expr(0).expr(0).getText();
+				String con_b =ctx.select_core(0).expr(0).expr(1).getText();
+				String operador = ctx.select_core(0).expr(0).getChild(1).getText();
+				if(operador.equals("<>") || operador.equals("!=")){
+					select+="if (!(String.valueOf(holder.table.get(i)."+con_a+").equals(\""+con_b+"\")))\n";	
+				}
+				else if(operador.equals("==")||operador.equals("=")){
+					select+="if ((String.valueOf(holder.table.get(i)."+con_a+").equals(\""+con_b+"\")))\n";
+				}
+				else{
+					select+="if (holder.table.get(i)."+con_a+operador+con_b+")\n";
+				}
+				
+			}	
+			
+			
+			
+			
+			select += "\n		holder.table.get(i).result(name);";
 			select += "\n	}";
 			select += "\n	System.out.println();";
 			select += "\n	}";

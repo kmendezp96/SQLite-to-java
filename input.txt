@@ -1,10 +1,12 @@
-create table beta(
+create table Usuario(
 	a int,
 	b text,
 	c float
 );
 
-insert into ex2 (a,b,c) values (1,"text1",1.0);
-insert into ex2 (a,b,c) values (1,"text1",1.0);
+insert into Usuario (a,b,c) values (1,"text1",1);
+insert into Usuario (a,b,c) values (2,"text2",2);
+insert into Usuario (a,b,c) values (3,"text3",3);
+insert into Usuario (a,b,c) values (4,"text4",4);
 
-select a,b,c from beta;
+select all from Usuario where c > 1.0;
