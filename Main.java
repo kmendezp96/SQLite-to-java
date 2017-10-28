@@ -9,7 +9,7 @@ temp0Usuario.a = 1;
  holderUsuario.table.push(temp0Usuario); 
  Usuario temp1Usuario = new Usuario(); 
 temp1Usuario.a = 2; 
- temp1Usuario.b = "text2"; 
+ temp1Usuario.b = "Text2"; 
  temp1Usuario.c = 2; 
  holderUsuario.table.push(temp1Usuario); 
  Usuario temp2Usuario = new Usuario(); 

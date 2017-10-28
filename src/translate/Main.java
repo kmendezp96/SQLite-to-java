@@ -1,83 +1,189 @@
 package translate; 
  public class Main { 
 public static void main(String []args) throws IllegalArgumentException, IllegalAccessException{
-Usuario holderUsuario = new Usuario(); 
-Usuario temp0Usuario = new Usuario(); 
-temp0Usuario.a = 1; 
- temp0Usuario.b = "text1"; 
- temp0Usuario.c = 1; 
- holderUsuario.table.push(temp0Usuario); 
- Usuario temp1Usuario = new Usuario(); 
-temp1Usuario.a = 2; 
- temp1Usuario.b = "text2"; 
- temp1Usuario.c = 2; 
- holderUsuario.table.push(temp1Usuario); 
- Usuario temp2Usuario = new Usuario(); 
-temp2Usuario.a = 3; 
- temp2Usuario.b = "text3"; 
- temp2Usuario.c = 3; 
- holderUsuario.table.push(temp2Usuario); 
- Usuario temp3Usuario = new Usuario(); 
-temp3Usuario.a = 4; 
- temp3Usuario.b = "text4"; 
- temp3Usuario.c = 4; 
- holderUsuario.table.push(temp3Usuario); 
- for (int j=0;j<holderUsuario.table.size(); j++) { 
-if (holderUsuario.table.get(j).b.matches(".*ext4")) { 
-holderUsuario.table.get(j).a = 30; 
- } 
- } 
-Usuario holder = new Usuario();
-holder = holderUsuario;
-
-int espaciado;
-String espacio;
-
-String a = "a";
-espaciado = 20-a.length();
-espacio="";
-for (int j=0;j<espaciado;j++){
-	espacio+=" ";
-}
-System.out.print(a+espacio);
-
-String c = "c";
-espaciado = 20-c.length();
-espacio="";
-for (int j=0;j<espaciado;j++){
-	espacio+=" ";
-}
-System.out.print(c+espacio);
-
-System.out.println();
-
-String con_b;
-con_b = "'%ext4'";
-for(int i=0;i<holder.table.size();i++){
-
-
-con_b = con_b.replace("\'", "");
-con_b = con_b.replace("%",".*");
-if ((String.valueOf(holder.table.get(i).b).matches(con_b))){
-
-	a = String.valueOf(holder.table.get(i).a);
-	espaciado =20-a.length();
-	espacio="";
-	for (int j=0;j<espaciado;j++){
+Empleado holderEmpleado = new Empleado(); 
+Empleado temp0Empleado = new Empleado(); 
+temp0Empleado.Emp_documento = 342654243; 
+ temp0Empleado.Emp_nombre = "Fabián Leonardo Rondón Gonzalez"; 
+ temp0Empleado.Emp_edad = 19; 
+ temp0Empleado.Emp_telefono = 3223421; 
+ temp0Empleado.Emp_correo = "FabRon@hotmail.com"; 
+ temp0Empleado.Emp_sexo = "M"; 
+ temp0Empleado.Emp_sueldo = 670000; 
+ temp0Empleado.Emp_horario = "Lun-Viernes (9 am-5 pm)"; 
+ temp0Empleado.Emp_Suc_id = 10; 
+ holderEmpleado.table.push(temp0Empleado); 
+ Empleado temp1Empleado = new Empleado(); 
+temp1Empleado.Emp_documento = 543568432; 
+ temp1Empleado.Emp_nombre = "Alexandra Perez Santamaria"; 
+ temp1Empleado.Emp_edad = 34; 
+ temp1Empleado.Emp_telefono = 5420495; 
+ temp1Empleado.Emp_correo = "Alexa34@hotmail.com"; 
+ temp1Empleado.Emp_sexo = "F"; 
+ temp1Empleado.Emp_sueldo = 670000; 
+ temp1Empleado.Emp_horario = "miercoles-domingo (11 am-7 pm)"; 
+ temp1Empleado.Emp_Suc_id = 9; 
+ holderEmpleado.table.push(temp1Empleado); 
+ Empleado temp2Empleado = new Empleado(); 
+temp2Empleado.Emp_documento = 194860246; 
+ temp2Empleado.Emp_nombre = "Juan Diego Londoño"; 
+ temp2Empleado.Emp_edad = 43; 
+ temp2Empleado.Emp_telefono = 7593752; 
+ temp2Empleado.Emp_correo = "JuanDi@outlook.com"; 
+ temp2Empleado.Emp_sexo = "M"; 
+ temp2Empleado.Emp_sueldo = 690000; 
+ temp2Empleado.Emp_horario = "martes-sabado (11 am-7 pm)"; 
+ temp2Empleado.Emp_Suc_id = 6; 
+ holderEmpleado.table.push(temp2Empleado); 
+ Empleado temp3Empleado = new Empleado(); 
+temp3Empleado.Emp_documento = 1045324574; 
+ temp3Empleado.Emp_nombre = "Laura Navia Alvarez"; 
+ temp3Empleado.Emp_edad = 21; 
+ temp3Empleado.Emp_telefono = 1295831; 
+ temp3Empleado.Emp_correo = "Lau54_32@yahoo.com"; 
+ temp3Empleado.Emp_sexo = "F"; 
+ temp3Empleado.Emp_sueldo = 760000; 
+ temp3Empleado.Emp_horario = "Lun-Viernes (9 am-5 pm)"; 
+ temp3Empleado.Emp_Suc_id = 10; 
+ holderEmpleado.table.push(temp3Empleado); 
+ Empleado temp4Empleado = new Empleado(); 
+temp4Empleado.Emp_documento = 1034532312; 
+ temp4Empleado.Emp_nombre = "Joan Mauricio Bello "; 
+ temp4Empleado.Emp_edad = 24; 
+ temp4Empleado.Emp_telefono = 6933295; 
+ temp4Empleado.Emp_correo = "MauroB2@hotmail.com"; 
+ temp4Empleado.Emp_sexo = "M"; 
+ temp4Empleado.Emp_sueldo = 760000; 
+ temp4Empleado.Emp_horario = "Lun-Viernes (2 pm-11 pm)"; 
+ temp4Empleado.Emp_Suc_id = 4; 
+ holderEmpleado.table.push(temp4Empleado); 
+ Empleado temp5Empleado = new Empleado(); 
+temp5Empleado.Emp_documento = 705323574; 
+ temp5Empleado.Emp_nombre = "Lucía Buitrago Sánchez "; 
+ temp5Empleado.Emp_edad = 27; 
+ temp5Empleado.Emp_telefono = 6976443; 
+ temp5Empleado.Emp_correo = "LuciMuitrago@outlook.com"; 
+ temp5Empleado.Emp_sexo = "F"; 
+ temp5Empleado.Emp_sueldo = 900000; 
+ temp5Empleado.Emp_horario = "Lun-Viernes (1 pm-9 pm)"; 
+ temp5Empleado.Emp_Suc_id = 1; 
+ holderEmpleado.table.push(temp5Empleado); 
+ Empleado temp6Empleado = new Empleado(); 
+temp6Empleado.Emp_documento = 912376458; 
+ temp6Empleado.Emp_nombre = "Juan Sebastian Moreno"; 
+ temp6Empleado.Emp_edad = 31; 
+ temp6Empleado.Emp_telefono = 7965994; 
+ temp6Empleado.Emp_correo = "Juan32Seb@outlook.com"; 
+ temp6Empleado.Emp_sexo = "M"; 
+ temp6Empleado.Emp_sueldo = 800000; 
+ temp6Empleado.Emp_horario = "Lun-Viernes (9 am-5 pm)"; 
+ temp6Empleado.Emp_Suc_id = 1; 
+ holderEmpleado.table.push(temp6Empleado); 
+ Empleado temp7Empleado = new Empleado(); 
+temp7Empleado.Emp_documento = 834528405; 
+ temp7Empleado.Emp_nombre = "Oscar Ochoa velazquez"; 
+ temp7Empleado.Emp_edad = 46; 
+ temp7Empleado.Emp_telefono = 7533432; 
+ temp7Empleado.Emp_correo = "OscarOchoa2322@gmail.com"; 
+ temp7Empleado.Emp_sexo = "M"; 
+ temp7Empleado.Emp_sueldo = 760000; 
+ temp7Empleado.Emp_horario = "Lun-Viernes (1 pm-9 pm)"; 
+ temp7Empleado.Emp_Suc_id = 7; 
+ holderEmpleado.table.push(temp7Empleado); 
+ Empleado temp8Empleado = new Empleado(); 
+temp8Empleado.Emp_documento = 739103605; 
+ temp8Empleado.Emp_nombre = "Alex Rodríguez Roldan"; 
+ temp8Empleado.Emp_edad = 52; 
+ temp8Empleado.Emp_telefono = 4323431; 
+ temp8Empleado.Emp_correo = "AlexR65@yahoo.com"; 
+ temp8Empleado.Emp_sexo = "M"; 
+ temp8Empleado.Emp_sueldo = 800000; 
+ temp8Empleado.Emp_horario = "Lun-Viernes (5 pm-11 pm)"; 
+ temp8Empleado.Emp_Suc_id = 4; 
+ holderEmpleado.table.push(temp8Empleado); 
+ Empleado temp9Empleado = new Empleado(); 
+temp9Empleado.Emp_documento = 1024953912; 
+ temp9Empleado.Emp_nombre = "Nicolas Santana Niño"; 
+ temp9Empleado.Emp_edad = 27; 
+ temp9Empleado.Emp_telefono = 6575423; 
+ temp9Empleado.Emp_correo = "NicoSantanaNiño232@yahoo.com"; 
+ temp9Empleado.Emp_sexo = "M"; 
+ temp9Empleado.Emp_sueldo = 670000; 
+ temp9Empleado.Emp_horario = "Miercoles-Domingo (9 am-5 pm)"; 
+ temp9Empleado.Emp_Suc_id = 8; 
+ holderEmpleado.table.push(temp9Empleado); 
+ Empleado temp10Empleado = new Empleado(); 
+temp10Empleado.Emp_documento = 654321659; 
+ temp10Empleado.Emp_nombre = "Luisa Cardona"; 
+ temp10Empleado.Emp_edad = 29; 
+ temp10Empleado.Emp_telefono = 7875510; 
+ temp10Empleado.Emp_correo = "LuisaCard@outlook.com"; 
+ temp10Empleado.Emp_sexo = "F"; 
+ temp10Empleado.Emp_sueldo = 910000; 
+ temp10Empleado.Emp_horario = "Lun-Viernes (9 am-4 pm)"; 
+ temp10Empleado.Emp_Suc_id = 2; 
+ holderEmpleado.table.push(temp10Empleado); 
+ Empleado temp11Empleado = new Empleado(); 
+temp11Empleado.Emp_documento = 1034927381; 
+ temp11Empleado.Emp_nombre = "Mario Hernandez"; 
+ temp11Empleado.Emp_edad = 31; 
+ temp11Empleado.Emp_telefono = 2307641; 
+ temp11Empleado.Emp_correo = "MaritoHernandez31@outlook.com"; 
+ temp11Empleado.Emp_sexo = "M"; 
+ temp11Empleado.Emp_sueldo = 790000; 
+ temp11Empleado.Emp_horario = "Lun-Viernes (1 pm-6 pm)"; 
+ temp11Empleado.Emp_Suc_id = 3; 
+ holderEmpleado.table.push(temp11Empleado); 
+ Empleado temp12Empleado = new Empleado(); 
+temp12Empleado.Emp_documento = 804296529; 
+ temp12Empleado.Emp_nombre = "Jesus Mateo Vega"; 
+ temp12Empleado.Emp_edad = 36; 
+ temp12Empleado.Emp_telefono = 9471802; 
+ temp12Empleado.Emp_correo = "Jesus_Vega_@gmail.com"; 
+ temp12Empleado.Emp_sexo = "M"; 
+ temp12Empleado.Emp_sueldo = 860000; 
+ temp12Empleado.Emp_horario = "Miercoles-Domingo (1 pm-9 pm)"; 
+ temp12Empleado.Emp_Suc_id = 2; 
+ holderEmpleado.table.push(temp12Empleado); 
+ Empleado temp13Empleado = new Empleado(); 
+temp13Empleado.Emp_documento = 904219375; 
+ temp13Empleado.Emp_nombre = "Alejandro Robayo"; 
+ temp13Empleado.Emp_edad = 25; 
+ temp13Empleado.Emp_telefono = 4591276; 
+ temp13Empleado.Emp_correo = "alejorobayo45@yahoo.com"; 
+ temp13Empleado.Emp_sexo = "M"; 
+ temp13Empleado.Emp_sueldo = 700000; 
+ temp13Empleado.Emp_horario = "Lun-Viernes (9 am-3 pm)"; 
+ temp13Empleado.Emp_Suc_id = 5; 
+ holderEmpleado.table.push(temp13Empleado); 
+ Empleado temp14Empleado = new Empleado(); 
+temp14Empleado.Emp_documento = 1053929581; 
+ temp14Empleado.Emp_nombre = "Angel Perez Palacio"; 
+ temp14Empleado.Emp_edad = 40; 
+ temp14Empleado.Emp_telefono = 3192832; 
+ temp14Empleado.Emp_correo = "angelPP@yahoo.com"; 
+ temp14Empleado.Emp_sexo = "M"; 
+ temp14Empleado.Emp_sueldo = 750000; 
+ temp14Empleado.Emp_horario = "Miercoles-Domingo (9 am-5 pm)"; 
+ temp14Empleado.Emp_Suc_id = 3; 
+ holderEmpleado.table.push(temp14Empleado); 
+ Empleado holder = new Empleado();
+holder = holderEmpleado;
+Empleado nuevo = new Empleado();
+for (java.lang.reflect.Field field : nuevo.getClass().getDeclaredFields()) {
+	field.setAccessible(true);
+	String name = field.getName();
+	if(name!="table"){
+	int espaciado =20-name.length();
+	String espacio="";
+	for (int i=0;i<espaciado;i++){
 		espacio+=" ";
 	}
-	System.out.print(a+espacio);
-
-	c = String.valueOf(holder.table.get(i).c);
-	espaciado =20-c.length();
-	espacio="";
-	for (int j=0;j<espaciado;j++){
-		espacio+=" ";
+	System.out.print(name+espacio);
+	for(int i=0;i<holder.table.size();i++){
+		holder.table.get(i).result(name);
 	}
-	System.out.print(c+espacio);
-
 	System.out.println();
-
 	}
 }
 }

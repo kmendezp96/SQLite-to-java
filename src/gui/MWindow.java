@@ -43,7 +43,6 @@ import java.awt.BorderLayout;
 import javax.swing.JRootPane;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
-import translate.Main;
 public class MWindow {
 
 	static File archivo=new File("input.txt");
@@ -118,8 +117,8 @@ public class MWindow {
 			        		loader.visit(tree);
 			        		System.out.println(loader.out);
 			        		output.setText(loader.out);
-			        		Main m=new Main();
-			        		m.main(null);
+			        		//Main m=new Main();
+			        		//m.main(null);
 			        		
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
